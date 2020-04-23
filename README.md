@@ -3,7 +3,7 @@ Easy to use, Good looking, Highly utilized, and Light Tensorflow Tool.\
 PygIDE (Python graphical integrated development environment) allows anyone, even without any previous knowledge of deep learning frameworks, to design, train and deploy machine intelligence models without coding.\
 No need to Code! NO need type Command line!\
 All you need to do is download exe file and go!\
-![picture](https://github.com/boguss1225/ObjectDetectionGUI/blob/master/ObjectDetectionGUI%20screenshot/Detect_faster_rccn_inception.png)
+![picture](https://github.com/boguss1225/ObjectDetectionGUI/blob/master/screenshot/Detect_faster_rccn_inception.png)
 
 # Requirement for user
 * Windows 10
@@ -22,32 +22,32 @@ All you need to do is download exe file and go!\
 (//source link)
 
 ## Set classes
-![picture](https://github.com/boguss1225/ObjectDetectionGUI/blob/master/ObjectDetectionGUI%20screenshot/step1setclasses.PNG)
+![picture](https://github.com/boguss1225/ObjectDetectionGUI/blob/master/screenshot/step1setclasses.PNG)
 
 ## Generate TF-record files
-![picture](https://github.com/boguss1225/ObjectDetectionGUI/blob/master/ObjectDetectionGUI%20screenshot/step2-GenerateTFrecord.PNG)
+![picture](https://github.com/boguss1225/ObjectDetectionGUI/blob/master/screenshot/step2-GenerateTFrecord.PNG)
 
 ## Set configurations
-![picture](https://github.com/boguss1225/ObjectDetectionGUI/blob/master/ObjectDetectionGUI%20screenshot/configuration.PNG)
+![picture](https://github.com/boguss1225/ObjectDetectionGUI/blob/master/screenshot/configuration.PNG)
 
 ## Training
-![picture](https://github.com/boguss1225/ObjectDetectionGUI/blob/master/ObjectDetectionGUI%20screenshot/Train-finished.PNG)
+![picture](https://github.com/boguss1225/ObjectDetectionGUI/blob/master/screenshot/Train-finished.PNG)
 
 ## Generate Pb file (frozen inference graph.pb)
-![picture](https://github.com/boguss1225/ObjectDetectionGUI/blob/master/ObjectDetectionGUI%20screenshot/convertCKPT-result2.PNG)
+![picture](https://github.com/boguss1225/ObjectDetectionGUI/blob/master/screenshot/convertCKPT-result2.PNG)
 
 ## Object Detection
-* faster_rcnn_inception
-![picture](https://github.com/boguss1225/ObjectDetectionGUI/blob/master/ObjectDetectionGUI%20screenshot/Detect_faster_rccn_inception.png)
-* rfcn_resnet101
-![picture](https://github.com/boguss1225/ObjectDetectionGUI/blob/master/ObjectDetectionGUI%20screenshot/Detect_rfcn_resnet101.png)
-* ssd_mobilenet_v2
-![picture](https://github.com/boguss1225/ObjectDetectionGUI/blob/master/ObjectDetectionGUI%20screenshot/Detect_ssd_mobilenet_v2.png)
-* mask_rcnn_resnet101
-![picture](https://github.com/boguss1225/ObjectDetectionGUI/blob/master/ObjectDetectionGUI%20screenshot/Detect_mask_rccn_resnet101.png)
+* faster_rcnn_inception\
+![picture](https://github.com/boguss1225/ObjectDetectionGUI/blob/master/screenshot/Detect_faster_rccn_inception.png)
+* rfcn_resnet101\
+![picture](https://github.com/boguss1225/ObjectDetectionGUI/blob/master/screenshot/Detect_rfcn_resnet101.png)
+* ssd_mobilenet_v2\
+![picture](https://github.com/boguss1225/ObjectDetectionGUI/blob/master/screenshot/Detect_ssd_mobilenet_v2.png)
+* mask_rcnn_resnet101\
+![picture](https://github.com/boguss1225/ObjectDetectionGUI/blob/master/screenshot/Detect_mask_rccn_resnet101.png)
 
 ## Evaluate trained model
-![picture](https://github.com/boguss1225/ObjectDetectionGUI/blob/master/ObjectDetectionGUI%20screenshot/eval_model-finished.PNG)
+![picture](https://github.com/boguss1225/ObjectDetectionGUI/blob/master/screenshot/eval_model-finished.PNG)
 
 # Manual
 step by step manual is available here\
