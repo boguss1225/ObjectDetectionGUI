@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="ganymed-ssh2-build210.jar"/>
+	<classpathentry kind="lib" path="jsch-0.1.54.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
