@@ -40,7 +40,7 @@ import tfgui.view.MainView;
 * Date : Initial Development in 2019
 *
 * For the latest version, please check the github 
-* (https://github.com/boguss1225/TF-GUI)
+* (https://github.com/boguss1225/ObjectDetectionGUI)
 * 
 * ==========================================================================
 * Description : This program allows users to train models, configure settings,
@@ -56,7 +56,7 @@ public class ToolBarSection extends JToolBar{
 	
 	public ToolBarSection(JFrame frame, SSHClient sshclient){
 		toolbarBtn = new JButton[11];
-		toolbarBtn[0] = new JButton(new ImageIcon("src/tfgui/icon/addProject.png"));
+		toolbarBtn[0] = new JButton();
 		toolbarBtn[1] = new JButton(new ImageIcon("src/tfgui/icon/window.png"));
 		toolbarBtn[2] = new JButton(new ImageIcon("src/tfgui/icon/stopproject.png"));
 		toolbarBtn[3] = new JButton(new ImageIcon("src/tfgui/icon/check-box.png"));
@@ -66,9 +66,9 @@ public class ToolBarSection extends JToolBar{
 		toolbarBtn[7] = new JButton(new ImageIcon("src/tfgui/icon/loupe_pic.png"));
 		toolbarBtn[8] = new JButton(new ImageIcon("src/tfgui/icon/loupe_video.png"));
 		toolbarBtn[9] = new JButton(new ImageIcon("src/tfgui/icon/pb.png"));
-		toolbarBtn[10] = new JButton(new ImageIcon("src/tfgui/icon/cmd.png"));
+		toolbarBtn[10] = new JButton();
 		
-		toolbarBtn[0].setToolTipText("new Environment");
+		//toolbarBtn[0].setToolTipText();
 		toolbarBtn[1].setToolTipText("Open Environment");
 		toolbarBtn[2].setToolTipText("Stop Environment");
 		toolbarBtn[3].setToolTipText("Check All Files");
@@ -78,7 +78,6 @@ public class ToolBarSection extends JToolBar{
 		toolbarBtn[7].setToolTipText("detect pictures");
 		toolbarBtn[8].setToolTipText("detect videos");
 		toolbarBtn[9].setToolTipText("make pb file by converting .ckpt");
-		toolbarBtn[10].setToolTipText("Open Putty");
 				
 		this.setFloatable(false);
 		
@@ -176,8 +175,7 @@ public class ToolBarSection extends JToolBar{
 		class toolbarBtn10EventHandler implements ActionListener{
 			@Override
 			public void actionPerformed(ActionEvent ae){
-				//Open Putty
-				new runPutty("ls");
+				
 			}}	
 		toolbarBtn[10].addActionListener(new toolbarBtn10EventHandler());
 	}

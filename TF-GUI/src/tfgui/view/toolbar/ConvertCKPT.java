@@ -14,8 +14,10 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingWorker;
 
 import tfgui.controller.putty.runPutty;
+import tfgui.controller.putty.runprocessDia;
 import tfgui.controller.sshclient.SSHClient;
 import tfgui.model.Model;
 import tfgui.view.MainView;
@@ -47,7 +49,7 @@ import tfgui.view.right.RightUnderView;
 * Date : Initial Development in 2019
 *
 * For the latest version, please check the github 
-* (https://github.com/boguss1225/TF-GUI)
+* (https://github.com/boguss1225/ObjectDetectionGUI)
 * 
 * ==========================================================================
 * Description : This program allows users to train models, configure settings,
@@ -83,7 +85,7 @@ public class ConvertCKPT extends JDialog {
 	 	
 	 	/*result pane*/
 		/*ckpt pane*/
-		JPanel ckptpane = new ckptlistpane();
+		JPanel ckptpane = new ckptlistpane(this);
 	 	
 		/*set button1*/
 		JButton b1 = new JButton("OK");
@@ -111,7 +113,7 @@ class ckptlistpane extends JPanel{
 	private JLabel selectedFilenamel;
 	private JButton convertbt;
 	
-	ckptlistpane(){
+	ckptlistpane(JDialog parent){
 		//set Model
 		sshclient = Model.sshclient;
 
@@ -158,7 +160,7 @@ class ckptlistpane extends JPanel{
 		class convertbtEventHandler implements ActionListener{
 			@Override
 			public void actionPerformed(ActionEvent ae){
-				new convertdia(selectedFilenamel.getText());
+				new convertdia(selectedFilenamel.getText(), parent);
 			}}
 		convertbt.addActionListener(new convertbtEventHandler());
 		selectedFileNamePanel.add(convertbt);
@@ -173,7 +175,7 @@ class ckptlistpane extends JPanel{
 }
 
 class convertdia{
-	convertdia(String str){
+	convertdia(String str, JDialog parent){
 		/*create new dialog*/
 	 	JDialog Dia = new JDialog((JFrame)null,"convert 'ckpt' to 'pb' file",true);
 	 	Dia.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -192,8 +194,7 @@ class convertdia{
 	 	
 	 	/*get number*/
 	 	String number = str.substring(str.lastIndexOf("-")+1,str.length());
-	 	System.out.println(number);
-	 	
+	 		 	
 	 	/*result pane*/
 	 	JLabel infolabel = new JLabel(" Do you want to convert \n" + str + " to 'pb' file?");
 
@@ -203,15 +204,35 @@ class convertdia{
 			@Override
 			public void actionPerformed(ActionEvent ae){
 				//close all step1 dialog
-				String command = "cd /home/"+Model.username+"/tensorflowGUI/scripts "
+				String cmd = "cd /home/"+Model.username+"/tensorflowGUI/scripts "
 						+ "&& bash converckpt.sh "
-						+ Model.ActivatedEnv +" "+ number;
+						+ Model.ActivatedEnv +" "
+						+ number + " "
+						+ Model.selectedModel;
 				
-				//run Putty
-				new runPutty(command);
-				
-				//update log on RightUnderView
-				RightUnderView.updateCMDtxtField("**** Step4 'Convert ckpit file' executed ****\n");
+				//run Process
+				runprocessDia rundia = new runprocessDia(cmd);
+				//Test process whether finished
+				@SuppressWarnings("rawtypes")
+				SwingWorker sw = new SwingWorker() {
+					@Override
+					protected String doInBackground() throws Exception {
+						while(true) {
+							//check whether finished
+							if(!rundia.getongoinflag())
+								break;
+							Thread.sleep(1000);
+						}
+						//finished normally
+						if(rundia.getprocessfinishedsafely()) {
+							//update log on RightUnderView
+							RightUnderView.updateCMDtxtField("**** Step4 'Convert ckpit file' executed ****\n");
+							parent.dispose();
+						}
+						return "";
+					}
+				};
+				sw.execute();
 				Dia.dispose();
 			}}
 		b1.addActionListener(new b1EventHandler());

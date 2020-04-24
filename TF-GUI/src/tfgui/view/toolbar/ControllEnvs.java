@@ -2,6 +2,7 @@ package tfgui.view.toolbar;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -11,6 +12,9 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import tfgui.controller.sshclient.SSHClient;
@@ -60,24 +64,16 @@ public class ControllEnvs {
 class OpenEnv{
 	private int numofEnvs = 3;
 	private JButton[] btn;
-
+	private JDialog Dia;
+	private JDialog envloginDia;
+	
 	public  OpenEnv(SSHClient sshclient){
 		/*create new dialog*/
-	 	JDialog Dia = new JDialog((JFrame)null,"Open Environment",true);
+	 	Dia = new JDialog((JFrame)null,"Open Environment",true);
 	 	Dia.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 	 	
 	 	/*set size of dialog*/
 	 	Dia.setSize(200, 200);
-	 	
-	 	/*set location*/
-	 	Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-		int xpos = (int) (screen.getWidth() / 2 - Dia.getWidth() / 2);
-		int ypos = (int) (screen.getHeight() / 2 - Dia.getHeight() / 2);
-		Dia.setLocation(xpos, ypos);
-	
-	 	/*set label*/
-	 	JLabel l1 = new JLabel("Availiable Environments");
-	 	l1.setHorizontalAlignment(SwingConstants.CENTER);
 	 	
 	 	/*get environment list*/
 	 	String envlist = sshclient.sendCommand("cd /home/"+Model.username+"/tensorflowGUI/scripts "
@@ -92,9 +88,19 @@ class OpenEnv{
 		 	envName = envline[i+2].split(" ",2);
 	 		listofEnvName[i] = envName[0];
 	 	}
-
-	 	/*set layout*/
+	 	
+	 	/*set location*/
+	 	Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+		int xpos = (int) (screen.getWidth() / 2 - Dia.getWidth() / 2);
+		int ypos = (int) (screen.getHeight() / 2 - Dia.getHeight() / 2 - numofEnvs*10);
+		Dia.setLocation(xpos, ypos);
+	 	
+		/*set layout*/
 	 	Dia.setLayout(new GridLayout(numofEnvs+1,1,3,3));
+	 	
+	 	/*set label*/
+	 	JLabel l1 = new JLabel("Availiable Environments");
+	 	l1.setHorizontalAlignment(SwingConstants.CENTER);
 	 	
 	 	/*set buttons*/
 	 	btn = new JButton[numofEnvs];
@@ -107,17 +113,8 @@ class OpenEnv{
 				}
 				@Override
 				public void actionPerformed(ActionEvent ae){
-					System.out.println(envName + " environment is selected");
-					Model.ActivatedEnv= envName;
-					MainView.mainViewFrame.underpane.setActivatedEnvName(envName);
-					
-					//set exist classes and config data to model
-					Model.setclass();
-					Model.setmetricsSet();
-					
-					//show folders of activated env
-					MainView.mainViewFrame.leftPane.showFolders("/home/"+Model.username+"/tensorflowGUI/"+envName+"/models/research/object_detection/images");
-					Dia.dispose();
+					loginenvDia(envName);
+
 				}}
 			btn[i].addActionListener(new btnEventHandler(listofEnvName[i]));
 	 	}
@@ -129,5 +126,92 @@ class OpenEnv{
 	 	}
 		Dia.pack();
 		Dia.setVisible(true);
+	}
+	
+	void loginenvDia(String envName) {
+		
+		
+		/*create new dialog*/
+		envloginDia = new JDialog((JFrame)null,"Login Environment",true);
+		envloginDia.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+	 	
+	 	/*set size of dialog*/
+		envloginDia.setSize(200, 300);
+	 	
+	 	/*set location*/
+	 	Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+		int xpos = (int) (screen.getWidth() / 2 - envloginDia.getWidth() / 2);
+		int ypos = (int) (screen.getHeight() / 2 - envloginDia.getHeight() / 2);
+		envloginDia.setLocation(xpos, ypos);
+	
+		/*set layout*/
+	 	envloginDia.setLayout(new BorderLayout());
+		
+		/*set label*/
+	 	JLabel l1 = new JLabel("Login Environment: "+envName);
+	 	l1.setHorizontalAlignment(SwingConstants.CENTER);
+	 	
+		/*set input field*/
+	 	JLabel pswdl = new JLabel("Enter Password: ");
+		JTextField pswdtf = new JTextField();
+	 	pswdtf.setColumns(7);
+	 	JPanel inputP = new JPanel(new FlowLayout());
+	 	inputP.add(pswdl);
+	 	inputP.add(pswdtf);
+	 	
+	 	/*set buttons*/
+	 	JButton btn1 = new JButton("OK");
+		class btn1EventHandler implements ActionListener{
+			@Override
+			public void actionPerformed(ActionEvent ae){
+				String pswd = pswdtf.getText();
+				loginVarify(envName, pswd);
+		}}
+		btn1.addActionListener(new btn1EventHandler());
+		
+		JButton btn2 = new JButton("Cancel");
+		class btn2EventHandler implements ActionListener{
+			@Override
+			public void actionPerformed(ActionEvent ae){
+				envloginDia.dispose();
+		}}
+		btn2.addActionListener(new btn2EventHandler());
+	 	JPanel btnP = new JPanel(new FlowLayout());
+	 	btnP.add(btn1);
+	 	btnP.add(btn2);
+
+	 	/*add components*/
+	 	envloginDia.add(l1, BorderLayout.NORTH);
+	 	envloginDia.add(inputP, BorderLayout.CENTER);
+	 	envloginDia.add(btnP, BorderLayout.SOUTH);
+	 	envloginDia.pack();
+		envloginDia.setVisible(true);
+	}
+	
+	void loginVarify(String envName, String pswd) {
+		String command = "cd /home/"+Model.username+"/tensorflowGUI/scripts "
+				+ "&& ./pswdencrypt.sh "
+				+ envName+" "
+				+ pswd;
+		String validity = Model.sshclient.sendCommand(command);
+		
+		if(validity.contains("true")) {
+			System.out.println(envName + " environment is selected");
+			Model.ActivatedEnv= envName;
+			MainView.mainViewFrame.underpane.setActivatedEnvName(envName);
+
+			//set exist classes and config data to model
+			Model.setclass();
+
+			//show folders of activated env
+			MainView.mainViewFrame.leftPane.showFolders("/home/"+Model.username+"/tensorflowGUI/"+envName+"/models/research/object_detection/images");
+			Dia.dispose();	
+			envloginDia.dispose();
+		}else {
+			JOptionPane.showMessageDialog((JFrame)null,
+					"Wrong passowrd",
+					"Inane warning",
+					JOptionPane.WARNING_MESSAGE);
+		}
 	}
 }

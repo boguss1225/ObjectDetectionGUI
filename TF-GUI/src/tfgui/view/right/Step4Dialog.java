@@ -1,6 +1,7 @@
 package tfgui.view.right;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -13,11 +14,15 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import tfgui.controller.putty.runPutty;
+import tfgui.controller.putty.runprocessDia;
+import tfgui.controller.view.ModifiedFlowLayout;
 import tfgui.model.Model;
-/*
+/**
 * Copyright 2019 The Block-AI-VIsion Authors. All Rights Reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
@@ -44,7 +49,7 @@ import tfgui.model.Model;
 * Date : Initial Development in 2019
 *
 * For the latest version, please check the github 
-* (https://github.com/boguss1225/TF-GUI)
+* (https://github.com/boguss1225/ObjectDetectionGUI)
 * 
 * ==========================================================================
 * Description : This program allows users to train models, configure settings,
@@ -55,6 +60,8 @@ import tfgui.model.Model;
 *		Tensorflow virtual environment and relevant script code.
 */
 public class Step4Dialog {
+	JTextField GPUselectionTF;
+	
 	Step4Dialog(){
 		
 		/*create new dialog*/
@@ -62,7 +69,7 @@ public class Step4Dialog {
 	 	Dia.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 	 	
 	 	/*set size of dialog*/
-	 	Dia.setSize(300, 100);
+	 	Dia.setSize(600, 570);
 	 	
 	 	/*set location*/
 	 	Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
@@ -72,10 +79,30 @@ public class Step4Dialog {
 	 	
 	 	/*set layout*/
 	 	Dia.setLayout(new BorderLayout());
-	 	
-	 	/*announcement */
-	 	JLabel l1 = new JLabel("Run Training?");
+
+	 	//set contents pane
+	 	JPanel contentsP = new JPanel(new ModifiedFlowLayout());
+	 	JTextArea GPUstatTA = new JTextArea();
+	 	GPUselectionTF = new JTextField();
+	 	//gpu status
+	 	String GPUstat = Model.sshclient.sendCommand("nvidia-smi");
+	 	GPUstatTA.setText(GPUstat);
+	 	GPUstatTA.setEditable(false);
+	 	//gpu selection
+	 	JPanel GPUselectionP= new JPanel(new FlowLayout());
+	 	JLabel l1 = new JLabel("Select GPU ----> ");
 	 	l1.setHorizontalAlignment(SwingConstants.CENTER);
+	 	GPUselectionTF.setText("0");
+	 	GPUselectionTF.setColumns(2);
+	 	GPUselectionP.add(l1);
+	 	GPUselectionP.add(GPUselectionTF);
+	 	/*announcement */
+	 	JLabel l2 = new JLabel("************************************ Run Training? ************************************");
+	 	l2.setHorizontalAlignment(SwingConstants.CENTER);
+	 	//add components
+	 	contentsP.add(GPUstatTA);
+	 	contentsP.add(GPUselectionP);
+	 	contentsP.add(l2);
 	 	
 		/*set button1*/
 		JButton b1 = new JButton("OK");
@@ -84,14 +111,19 @@ public class Step4Dialog {
 			public void actionPerformed(ActionEvent ae){
 				//close all step4 dialog
 				Dia.dispose();
+				String selectedGPU = GPUselectionTF.getText();
 
 				//set command
 				String command = "cd /home/"+Model.username+"/tensorflowGUI/scripts "
 						+ "&& bash runTraining.sh "
-						+ Model.ActivatedEnv;
+						+ Model.ActivatedEnv+" "
+						+ Model.selectedModel+" "
+						+ selectedGPU;
 				
 				//run Putty
-				new runPutty(command);
+				//new runPutty(command);
+				new runprocessDia(command);
+				
 				RightUpperView.trainingbtn.setBackground(null);
 				RightUpperView.trainingbtn.setForeground(null);
 
@@ -115,8 +147,9 @@ public class Step4Dialog {
 		JPanel buttonPane = new JPanel(new GridLayout(1,2));
 		buttonPane.add(pb1);
 		buttonPane.add(pb2);
-		Dia.add(l1, BorderLayout.CENTER);
+		Dia.add(contentsP, BorderLayout.CENTER);
 		Dia.add(buttonPane, BorderLayout.SOUTH);
 		Dia.setVisible(true);
+		Dia.pack();
 	}
 }

@@ -7,12 +7,16 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-/*
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+/**
 * Copyright 2019 The Block-AI-VIsion Authors. All Rights Reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,7 +43,7 @@ import javax.swing.JPanel;
 * Date : Initial Development in 2019
 *
 * For the latest version, please check the github 
-* (https://github.com/boguss1225/TF-GUI)
+* (https://github.com/boguss1225/ObjectDetectionGUI)
 * 
 * ==========================================================================
 * Description : This program allows users to train models, configure settings,
@@ -52,13 +56,27 @@ import javax.swing.JPanel;
 public class MiddleView extends JPanel{
 	private static final long serialVersionUID = 1L;
 	private JLabel middleimage;
+	private JScrollPane scrP;
+	private JTextArea middletxt;
 	private int width, height;
+	
 	public MiddleView(){
 		this.setLayout(new BorderLayout());
 		this.setSize(300, 10);
-		ImageIcon mainIcon = new ImageIcon("src/tfgui/icon/tfutaslogo.png");		
+		
+		// init image
+		ImageIcon mainIcon = new ImageIcon("src/tfgui/icon/tfutaslogo.png");	
 		middleimage = new JLabel(mainIcon);
-	 	this.add(middleimage);
+		
+		// init text field
+		middletxt = new JTextArea(28,20);
+		middletxt.setEditable(false);
+		scrP = new JScrollPane(middletxt);
+		scrP.setVisible(false);
+		
+		//add components
+		this.add(scrP, BorderLayout.NORTH);
+		this.add(middleimage, BorderLayout.CENTER);
 	}
 	
 	public void setImage(String path) throws IOException{
@@ -78,6 +96,22 @@ public class MiddleView extends JPanel{
 	    g2.dispose();
 	    
 		middleimage.setIcon(new ImageIcon(resizedImg));
+		
+		// set visibility
+		scrP.setVisible(false);
+		middleimage.setVisible(true);
+	}
+	
+	public void setText(String path)throws IOException{
+		String srcTxt = null;
+
+		//get text from path
+		srcTxt = new String(Files.readAllBytes(Paths.get(path)));
+		middletxt.setText(srcTxt);
+		
+		// set visibility
+		scrP.setVisible(true);
+		middleimage.setVisible(false);
 	}
 	
 	private void recursiveResizer(int w, int h){

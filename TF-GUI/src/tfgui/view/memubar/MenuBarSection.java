@@ -13,7 +13,7 @@ import javax.swing.KeyStroke;
 
 import tfgui.controller.sshclient.SSHClient;
 
-/*
+/**
 * Copyright 2019 The Block-AI-VIsion Authors. All Rights Reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
@@ -96,6 +96,7 @@ public class MenuBarSection extends JMenuBar{
 		this.add(edit);
 		this.add(setting);
 		this.add(help);
+		this.add(about);
 		
 		/*<MenuItem_Action>*/
 		/*new

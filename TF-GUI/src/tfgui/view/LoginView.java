@@ -24,7 +24,7 @@ import javax.swing.SwingConstants;
 import tfgui.controller.sshclient.SSHClient;
 import tfgui.model.Model;
 
-/*
+/**
 * Copyright 2019 The Block-AI-VIsion Authors. All Rights Reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
@@ -51,7 +51,7 @@ import tfgui.model.Model;
 * Date : Initial Development in 2019
 *
 * For the latest version, please check the github 
-* (https://github.com/boguss1225/TF-GUI)
+* (https://github.com/boguss1225/ObjectDetectionGUI)
 * 
 * ==========================================================================
 * Description : This program allows users to train models, configure settings,
@@ -156,5 +156,6 @@ public class LoginView extends JFrame {
 	 	this.pack();
 	 	loginframe = this;
 	 	setVisible(true);
+	 	
 	}
 }

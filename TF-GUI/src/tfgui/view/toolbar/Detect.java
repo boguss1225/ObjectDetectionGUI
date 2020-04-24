@@ -20,7 +20,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.SwingWorker;
 
+import tfgui.controller.putty.runprocessDia;
 import tfgui.model.Model;
 import tfgui.view.MainView;
 import tfgui.view.left.LeftView;
@@ -62,6 +64,7 @@ import tfgui.view.left.LeftView;
 *		Tensorflow virtual environment and relevant script code.
 */
 public class Detect{
+	JDialog Dia ;
 	private String currentpath;
 	private String destinPath = Model.destinPath;
 	private JTextField l1txtfld;
@@ -75,7 +78,7 @@ public class Detect{
 		currentpath = MainView.mainViewFrame.leftPane.getcurrentPath();
 		
 		/*create new dialog*/
-	 	JDialog Dia = new JDialog((JFrame)null,"Object Detection",true);
+	 	Dia = new JDialog((JFrame)null,"Object Detection",true);
 	 	Dia.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 	 	
 	 	/*set size of dialog*/
@@ -234,37 +237,56 @@ public class Detect{
 		if(filename.length == 0){
 			//show error message
 			JOptionPane.showMessageDialog((JFrame)null,
-					"No item selected!",
+					"Please select images!",
 					"Inane warning",
 					JOptionPane.WARNING_MESSAGE);
 		}else{
 			//make file name array to string of file list 
 			String filenamelist = refactoryArray(filename);
 								
-			//Run Detectpic.sh
-			result = Model.sshclient.sendCommand("cd /home/"+Model.username+"/tensorflowGUI/scripts "
+			//Run Detectpic.sh process
+			String cmd = "cd /home/"+Model.username+"/tensorflowGUI/scripts "
 					+ shellscript
 					+ Model.ActivatedEnv +" "
 					+ Model.numofclass + " "
 					+ thickness + " "
 					+ min_score_thresh + " "
-					+ filenamelist);
-		
-			//Load Image to destin folder
-			for(int i = 0 ; i < filename.length ; i++){
-				filename[i] = "save_"+ filename[i];
-				System.out.println(filename[i]);
-			}
-			String[] loadfilelist = addPath(filename);
-		   	Model.sshclient.getFile(loadfilelist,destinPath);
-		   	
-		   	//Load Image to middle pane
-		   	String filepath = destinPath +"/"+ filename[0];
-		   	System.out.println("Load to middle: "+filepath);
-		   	MainView.mainViewFrame.middlePane.setImage(filepath);
+					+ filenamelist;
+			
+			runprocessDia rundia = new runprocessDia(cmd);
+			
+			//Test process whether finished
+			String[] filename_in = filename;
+			@SuppressWarnings("rawtypes")
+			SwingWorker sw = new SwingWorker() {
+				@Override
+				protected String doInBackground() throws Exception {
+					while(true) {
+						//check whether finished
+						if(!rundia.getongoinflag())
+							break;
+						Thread.sleep(1000);
+					}
+					//finished normally
+					if(rundia.getprocessfinishedsafely()) {
+						//Load Image to destin folder
+						for(int i = 0 ; i < filename_in.length ; i++){
+							filename_in[i] = "save_"+ filename_in[i];
+						}
+						String[] loadfilelist = addPath(filename_in);
+					   	Model.sshclient.getFile(loadfilelist,destinPath);
+					   	
+					   	//Load Image to middle pane
+					   	String filepath = destinPath +"/"+ filename_in[0];
+					   	MainView.mainViewFrame.middlePane.setImage(filepath);
+					}
+					return "";
+				}
+			};
+			sw.execute();
+			Dia.dispose();
 		}
 		
-	new detectresultDia(result);
 }
 	
 	//make file name array to file list string with double quotation marks and path

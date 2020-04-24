@@ -24,7 +24,7 @@ import javax.swing.SwingConstants;
 import tfgui.controller.sshclient.SSHClient;
 import tfgui.controller.view.AdjustDialogLocation;
 import tfgui.model.Model;
-/*
+/**
 * Copyright 2019 The Block-AI-VIsion Authors. All Rights Reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
@@ -51,7 +51,7 @@ import tfgui.model.Model;
 * Date : Initial Development in 2019
 *
 * For the latest version, please check the github 
-* (https://github.com/boguss1225/TF-GUI)
+* (https://github.com/boguss1225/ObjectDetectionGUI)
 * 
 * ==========================================================================
 * Description : This program allows users to train models, configure settings,
@@ -260,7 +260,7 @@ class AboutDialog{
 			});
 		 	
 			/*set size of dialog*/
-		 	AboutDia.setSize(440, 200);
+		 	AboutDia.setSize(620, 600);
 		 	
 			/*set location*/
 		 	new AdjustDialogLocation(f,AboutDia);
@@ -270,12 +270,41 @@ class AboutDialog{
 		 	
 			/*add About statements here :) */
 		 	String detailstring = 
-		 	"Tensorflow GUI for UTAS DI Server"
-		 	+ "\n(c) Copyright HM Yoon 2019. All rights reserved."
-		 	+ "\nall the properties of this program follow GNU General Public License lisence."
-		 	+ "\ncontact details"
-		 	+ "\nHM Yoon heemoony@utas.edu.au"
-		 	+ "\n";
+		 	"* Copyright 2019 The Block-AI-VIsion Authors. All Rights Reserved.\r\n" + 
+		 	"*\r\n" + 
+		 	"* Licensed under the Apache License, Version 2.0 (the \"License\");\r\n" + 
+		 	"* you may not use this file except in compliance with the License.\r\n" + 
+		 	"* You may obtain a copy of the License at\r\n" + 
+		 	"*\r\n" + 
+		 	"*     http://www.apache.org/licenses/LICENSE-2.0\r\n" + 
+		 	"*\r\n" + 
+		 	"* Unless required by applicable law or agreed to in writing, software\r\n" + 
+		 	"* distributed under the License is distributed on an \"AS IS\" BASIS,\r\n" + 
+		 	"* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\r\n" + 
+		 	"* See the License for the specific language governing permissions and\r\n" + 
+		 	"* limitations under the License.\r\n" + 
+		 	"* ==========================================================================\r\n" + 
+		 	"*\r\n" + 
+		 	"* This file is part of Tensorflow GUI program under Block-AI-VIsion project.\r\n" + 
+		 	"*\r\n" + 
+		 	"* Made in University of Tasmania, Australia.\r\n" + 
+		 	"*\r\n" + 
+		 	"* @Authors : Dr.Mira Park (mira.park@utas.edu.au)\r\n" + 
+		 	"*	     Dr.Sanghee Lee (knusang1799@gmail.com)\r\n" + 
+		 	"*	     Heemoon Yoon (boguss1225@gmail.com)\r\n" + 
+		 	"*\r\n" + 
+		 	"* Date : Initial Development in 2019\r\n" + 
+		 	"*\r\n" + 
+		 	"* For the latest version, please check the github \r\n" + 
+		 	"* (https://github.com/boguss1225/ObjectDetectionGUI)\r\n" + 
+		 	"* \r\n" + 
+		 	"* ==========================================================================\r\n" + 
+		 	"* Description : This program allows users to train models, configure settings,\r\n" + 
+		 	"*		detect objects and control image data within GUI level. \r\n" + 
+		 	"*		This program converted almost every steps of Tensorflow model \r\n" + 
+		 	"*		training into GUI so that user can easily utilize Tensorflow. \r\n" + 
+		 	"*		To operate this program, server need to have preinstalled \r\n" + 
+		 	"*		Tensorflow virtual environment and relevant script code.";
 		 	
 		 	/*set text area*/
 		 	JEditorPane txt1 = new JEditorPane();

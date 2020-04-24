@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-/*
+/**
 * Copyright 2019 The Block-AI-VIsion Authors. All Rights Reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,7 +41,7 @@ import javax.swing.JOptionPane;
 * Date : Initial Development in 2019
 *
 * For the latest version, please check the github 
-* (https://github.com/boguss1225/TF-GUI)
+* (https://github.com/boguss1225/ObjectDetectionGUI)
 * 
 * ==========================================================================
 * Description : This program allows users to train models, configure settings,
@@ -169,6 +169,28 @@ public class SSHClient{
 	   return outputBuffer.toString();
 	}
 
+	public Channel sendCommandStream(String command)
+	{   
+		Channel channel;
+		command = refactoryCommand(command);
+		//StringBuilder outputBuffer = new StringBuilder();
+	   try
+	   {	
+		  channel = sesConnection.openChannel("exec");
+	      ((ChannelExec)channel).setCommand(command+ " 2>&1");
+	      channel.setInputStream(null);
+	      ((ChannelExec)channel).setErrStream(System.err);
+	   }
+	   
+	   catch(JSchException jschX)
+	   {
+	      logWarning(jschX.getMessage());
+	      return null;
+	   }
+
+	   return channel;
+	}
+	
 	public void putFile(File[] file, String destinPath){
 		try{
 			channel = sesConnection.openChannel("sftp");

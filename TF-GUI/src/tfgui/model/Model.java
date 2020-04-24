@@ -1,7 +1,7 @@
 package tfgui.model;
 
 import tfgui.controller.sshclient.SSHClient;
-/*
+/**
 * Copyright 2019 The Block-AI-VIsion Authors. All Rights Reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,7 +28,7 @@ import tfgui.controller.sshclient.SSHClient;
 * Date : Initial Development in 2019
 *
 * For the latest version, please check the github 
-* (https://github.com/boguss1225/TF-GUI)
+* (https://github.com/boguss1225/ObjectDetectionGUI)
 * 
 * ==========================================================================
 * Description : This program allows users to train models, configure settings,
@@ -46,6 +46,7 @@ public class Model {
 	public static SSHClient sshclient = null;
 	public static String ActivatedEnv = null;
 	public static String FilePath = null;
+	public static String selectedModel = "faster_rcnn_inception_v2";
 	
 	//Config details
 	public static int numofclass = 3;
