@@ -12,6 +12,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import tfgui.controller.sshclient.SSHClient;
+import tfgui.model.Model;
 /*
 * Copyright 2019 The Block-AI-VIsion Authors. All Rights Reserved.
 *

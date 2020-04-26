@@ -52,7 +52,7 @@ public class Model {
 	public static int numofclass = 3;
 	public static String[] classlist = null;
 	public static String destinPath = "/home/user/not/assigned/path/yet";
-	public static String metrics_set = null;
+	public static String metrics_set = "coco_detection_metrics";
 	
 	public static void initializeModel(){
 		ActivatedEnv = null;

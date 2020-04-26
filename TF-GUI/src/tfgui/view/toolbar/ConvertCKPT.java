@@ -10,19 +10,20 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingWorker;
 
-import tfgui.controller.putty.runPutty;
 import tfgui.controller.putty.runprocessDia;
 import tfgui.controller.sshclient.SSHClient;
 import tfgui.model.Model;
 import tfgui.view.MainView;
 import tfgui.view.right.RightUnderView;
-/*
+/**
 * Copyright 2019 The Block-AI-VIsion Authors. All Rights Reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
@@ -61,7 +62,9 @@ import tfgui.view.right.RightUnderView;
 */
 public class ConvertCKPT extends JDialog {
 	private static final long serialVersionUID = 1L;
-
+	// Models setting
+	private JComboBox modelselectionCB;
+		
 	ConvertCKPT(){
 		/*redirect to training folder*/
 		MainView.mainViewFrame.leftPane.showFolders("/home/"+Model.username+"/tensorflowGUI/"+Model.ActivatedEnv+"/models/research/object_detection/training");
@@ -83,6 +86,9 @@ public class ConvertCKPT extends JDialog {
 	 	/*set layout*/
 		this.setLayout(new BorderLayout());
 	 	
+		// northPane
+		JPanel northP = northpane();
+		
 	 	/*result pane*/
 		/*ckpt pane*/
 		JPanel ckptpane = new ckptlistpane(this);
@@ -101,9 +107,42 @@ public class ConvertCKPT extends JDialog {
 		/*add components*/
 		JPanel buttonPane = new JPanel();
 		buttonPane.add(pb1);
+		this.add(northP, BorderLayout.NORTH);
 		this.add(ckptpane, BorderLayout.CENTER);
 		this.add(buttonPane, BorderLayout.SOUTH);
 		this.setVisible(true);
+	}
+	
+	private JPanel northpane() {
+		JPanel northpane = new JPanel(new BorderLayout());
+
+		String[] model_types = { "faster_rcnn_inception_resnet_v2_atrous_coco",
+				"faster_rcnn_inception_resnet_v2_atrous_lowproposals_coco", "faster_rcnn_inception_v2",
+				"faster_rcnn_nas_coco", "faster_rcnn_nas_lowproposals_coco", "faster_rcnn_resnet50_coco",
+				"faster_rcnn_resnet50_lowproposals_coco", "faster_rcnn_resnet101_coco",
+				"faster_rcnn_resnet101_lowproposals_coco", "mask_rcnn_inception_resnet_v2_atrous_coco",
+				"mask_rcnn_inception_v2_coco", "mask_rcnn_resnet50_atrous_coco", "mask_rcnn_resnet101_atrous",
+				"rfcn_resnet101_coco", "ssd_inception_v2_coco", "ssd_mobilenet_v1_0.75_depth_300x300_coco",
+				"ssd_mobilenet_v1_0.75_depth_quantized_300x300_coco", "ssd_mobilenet_v1_coco",
+				"ssd_mobilenet_v1_fpn_shared_box_predictor_640x640_coco",
+				"ssd_mobilenet_v1_ppn_shared_box_predictor_300x300_coco", "ssd_mobilenet_v1_quantized_300x300_coco",
+				"ssd_mobilenet_v2_coco" };
+		modelselectionCB = new JComboBox(model_types);
+
+		// init selected model
+		modelselectionCB.setSelectedItem(Model.selectedModel);
+
+		// select action
+		modelselectionCB.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String selectedmodel = modelselectionCB.getSelectedItem().toString();
+				Model.selectedModel = selectedmodel;
+			}
+		});
+
+		northpane.add(modelselectionCB, BorderLayout.WEST);
+		
+		return northpane;
 	}
 }
 
@@ -160,7 +199,14 @@ class ckptlistpane extends JPanel{
 		class convertbtEventHandler implements ActionListener{
 			@Override
 			public void actionPerformed(ActionEvent ae){
-				new convertdia(selectedFilenamel.getText(), parent);
+				if(selectedFilenamel.getText().equals("Not selected")) {
+					//show error message
+					JOptionPane.showMessageDialog((JFrame)null,
+							"Please select ckpt in list!",
+							"Inane warning",
+							JOptionPane.WARNING_MESSAGE);
+				}else
+					new convertdia(selectedFilenamel.getText(), parent);
 			}}
 		convertbt.addActionListener(new convertbtEventHandler());
 		selectedFileNamePanel.add(convertbt);
@@ -181,7 +227,7 @@ class convertdia{
 	 	Dia.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 	 	
 	 	/*set size of dialog*/
-	 	Dia.setSize(300, 100);
+	 	Dia.setSize(300, 150);
 	 	
 	 	/*set location*/
 	 	Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();

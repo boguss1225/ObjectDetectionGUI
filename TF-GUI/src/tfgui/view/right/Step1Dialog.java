@@ -24,7 +24,7 @@ import javax.swing.SwingConstants;
 import tfgui.controller.view.JNumberTextField;
 import tfgui.model.Model;
 import tfgui.view.MainView;
-/*
+/**
 * Copyright 2019 The Block-AI-VIsion Authors. All Rights Reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
@@ -217,7 +217,7 @@ public class Step1Dialog{
 	 	Dia.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 	 	
 	 	/*set size of dialog*/
-	 	Dia.setSize(400, 100);
+	 	Dia.setSize(400, 150);
 	 	
 	 	/*set location*/
 	 	Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
@@ -229,8 +229,8 @@ public class Step1Dialog{
 	 	Dia.setLayout(new BorderLayout());
 	 	
 	 	/*announcement */
-	 	JLabel l1 = new JLabel("  Class names have to be 'exactly same' with that of data set"
-	 			+ "\nare you sure those class names are correct?");
+	 	JLabel l1 = new JLabel("<html><body>Class names have to be 'exactly same' with that of data set<br>"
+	 			+ "are you sure those class names are correct?</body></html>");
 	 	l1.setHorizontalAlignment(SwingConstants.CENTER);
 	 	
 		/*set button1*/

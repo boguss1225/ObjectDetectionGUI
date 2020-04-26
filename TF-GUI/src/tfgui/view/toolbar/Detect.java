@@ -279,6 +279,9 @@ public class Detect{
 					   	//Load Image to middle pane
 					   	String filepath = destinPath +"/"+ filename_in[0];
 					   	MainView.mainViewFrame.middlePane.setImage(filepath);
+					   	
+					   	//refresh leftview
+					   	MainView.mainViewFrame.leftPane.showFolders(destinPath);
 					}
 					return "";
 				}

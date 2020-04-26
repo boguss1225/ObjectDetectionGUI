@@ -1,7 +1,6 @@
 package tfgui.view.right;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -18,7 +17,6 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import tfgui.controller.putty.runPutty;
 import tfgui.controller.putty.runprocessDia;
 import tfgui.controller.view.ModifiedFlowLayout;
 import tfgui.model.Model;
@@ -120,8 +118,6 @@ public class Step4Dialog {
 						+ Model.selectedModel+" "
 						+ selectedGPU;
 				
-				//run Putty
-				//new runPutty(command);
 				new runprocessDia(command);
 				
 				RightUpperView.trainingbtn.setBackground(null);

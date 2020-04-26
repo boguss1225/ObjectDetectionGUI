@@ -59,7 +59,7 @@ import tfgui.model.Model;
 *		This program converted almost every steps of Tensorflow model 
 *		training into GUI so that user can easily utilize Tensorflow. 
 *		To operate this program, server need to have preinstalled 
-*		Tensorflow virtual environment and relevant script code.
+*		Tensorflow virtual environment and relevant script code.s
 */
 
 public class LoginView extends JFrame {
@@ -157,5 +157,9 @@ public class LoginView extends JFrame {
 	 	loginframe = this;
 	 	setVisible(true);
 	 	
+	 	//delete this after test
+	    //Model.sshclient = new SSHClient("10.200.196.26", "guest2", "guest002");
+	    Model.sshclient = new SSHClient("ictdls.cis.utas.edu.au", "mirap", "Yolo777@");
+
 	}
 }

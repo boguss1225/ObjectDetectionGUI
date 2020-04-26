@@ -15,7 +15,7 @@ public class JNumberTextField extends JTextField {
 
     @Override
     public void processKeyEvent(KeyEvent ev) {
-        if (Character.isDigit(ev.getKeyChar())) {
+        if (Character.isDigit(ev.getKeyChar()) || ev.getKeyChar()==KeyEvent.VK_BACK_SPACE) {
             super.processKeyEvent(ev);
         }
         ev.consume();

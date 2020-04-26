@@ -6,8 +6,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -28,7 +26,7 @@ import tfgui.model.Model;
 import tfgui.view.MainView;
 import tfgui.view.right.RightUnderView;
 
-/*
+/**
 * Copyright 2019 The Block-AI-VIsion Authors. All Rights Reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
@@ -55,7 +53,7 @@ import tfgui.view.right.RightUnderView;
 * Date : Initial Development in 2019
 *
 * For the latest version, please check the github 
-* (https://github.com/boguss1225/TF-GUI)
+* (https://github.com/boguss1225/ObjectDetectionGUI)
 * 
 * ==========================================================================
 * Description : This program allows users to train models, configure settings,
@@ -137,7 +135,7 @@ public class LeftView extends JPanel {
 
 			public void mouseClicked(MouseEvent event) {
 				String pass = path.substring(0, path.lastIndexOf("/"));
-				if (!pass.endsWith("/object_detection")) {
+				if (!pass.endsWith("/models/research")) {
 					currentPath = pass;
 					refreshview();
 					RightUnderView.updateCMDtxtField(currentPath);
@@ -232,22 +230,24 @@ public class LeftView extends JPanel {
 		int numofvisiblefile = 0;
 		if (filename[0].length() > 2) {// not empty file folder
 			for (int i = 0; i < numofFiles; i++) {
-				if (filename[i].substring(2).startsWith(".")) {
+				String fileName = filename[i];
+				if (fileName.substring(2).startsWith(".")) {
 					// System.out.println("system file (no show): " + filename[i].substring(2));
 				} else {
-					if (!filename[i].endsWith(".py") && !filename[i].endsWith(".md") && !filename[i].endsWith(".ipynb")
-							&& !filename[i].endsWith(".config")) {
+					// test non-visible files
+					if (!fileName.endsWith(".py") && !fileName.endsWith(".md") && !fileName.endsWith(".ipynb")
+							&& !fileName.endsWith(".config")) {
+						// create visible file buttons;
 						fileBtns[numofvisiblefile] = new JPanel(new BorderLayout());
 						fileBtns[numofvisiblefile].setBorder(raisedetched);
 						JLabel iconl = new JLabel(new ImageIcon("src/tfgui/icon/bluefile.png"));
-						JLabel label = new JLabel(filename[i].substring(2));
+						JLabel label = new JLabel(fileName.substring(2));
 						chkbox[numofvisiblefile] = new JCheckBox();
-						filename[numofvisiblefile] = filename[i];
+						filename[numofvisiblefile]=fileName;
 
 						int i2 = numofvisiblefile;
-						int i3 = i;
+						//int i3 = i;
 						fileBtns[numofvisiblefile].addMouseListener(new MouseAdapter() {
-
 							@Override
 							public void mousePressed(final MouseEvent e) {
 								fileBtns[i2].setBorder(loweredetched);
@@ -265,25 +265,27 @@ public class LeftView extends JPanel {
 									directory.mkdir();
 
 								// if image file, load and display it on middle pane
-								if (filename[i3].endsWith("JPG") || filename[i3].endsWith("jpg")
-										|| filename[i3].endsWith("JPEG") || filename[i3].endsWith("jpeg")
-										|| filename[i3].endsWith("png")|| filename[i3].endsWith("PNG")) {
+								if (fileName.endsWith("JPG") || fileName.endsWith("jpg")
+										|| fileName.endsWith("JPEG") || fileName.endsWith("jpeg")
+										|| fileName.endsWith("png")|| fileName.endsWith("PNG")) {
 									try {
 										// load
 										// Load Image to middle
-										String filepath = "tempfile" + "/" + filename[i3];
-										sshclient.getFile(currentPath + "/" + filename[i3], filepath);
+										String filepath = "tempfile" + "/" + fileName;
+										sshclient.getFile(currentPath + "/" + fileName, filepath);
 										File f = new File(filepath);
 
 										// display
-										MainView.mainViewFrame.middlePane.setImage("tempfile" + "/" + filename[i3]);
+										MainView.mainViewFrame.middlePane.setImage("tempfile" + "/" + fileName);
 
 										f.delete();
 									} catch (IOException e1) {
 										e1.printStackTrace();
 									}
-								}else if (filename[i3].endsWith("graph.pbtxt")||filename[i3].startsWith("model.ckpt")
-										||filename[i3].startsWith("events.out.tfevents")){
+								//test forbidden files
+								}else if (fileName.endsWith("graph.pbtxt")||fileName.startsWith("./model.ckpt")
+										||fileName.startsWith("./events.out.tfevents")||fileName.endsWith(".record")
+										||fileName.endsWith(".pb")){
 									try {
 										MainView.mainViewFrame.middlePane.setImage("src/tfgui/icon/forbidenfile.png");
 									} catch (IOException e1) {
@@ -293,8 +295,8 @@ public class LeftView extends JPanel {
 									try {
 										// load
 										// Load Image to middle
-										String filepath = "tempfile" + "/" + filename[i3];
-										sshclient.getFile(currentPath + "/" + filename[i3], filepath);
+										String filepath = "tempfile" + "/" + fileName;
+										sshclient.getFile(currentPath + "/" + fileName, filepath);
 										File f = new File(filepath);
 										
 										//display
@@ -335,15 +337,11 @@ public class LeftView extends JPanel {
 	}
 
 	public void deletefiles() {
-		String[] deleteFileList = new String[numofFiles];
-		int cnt = 0;
-		// get checked files
-		for (int i = 0; i < numofFiles; i++) {
-			if (chkbox[i].isSelected()) {
-				// add to list
-				deleteFileList[cnt] = currentPath + "/" + filename[i].substring(2);
-				cnt++;
-			}
+		String[] deleteFileList = getCheckeditems();
+		
+		// add path to name
+		for (int i = 0; i < deleteFileList.length; i++) {
+			deleteFileList[i] = currentPath + "/" + deleteFileList[i];
 		}
 		sshclient.rmFile(deleteFileList);
 

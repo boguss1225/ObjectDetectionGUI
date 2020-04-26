@@ -20,12 +20,14 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
+import javax.swing.SwingWorker;
 
+import tfgui.controller.putty.runprocessDia;
 import tfgui.controller.sshclient.SSHClient;
 import tfgui.model.Model;
 import tfgui.view.MainView;
 import tfgui.view.left.LeftView;
-/*
+/**
 * Copyright 2019 The Block-AI-VIsion Authors. All Rights Reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
@@ -52,7 +54,7 @@ import tfgui.view.left.LeftView;
 * Date : Initial Development in 2019
 *
 * For the latest version, please check the github 
-* (https://github.com/boguss1225/TF-GUI)
+* (https://github.com/boguss1225/ObjectDetectionGUI)
 * 
 * ==========================================================================
 * Description : This program allows users to train models, configure settings,
@@ -98,20 +100,10 @@ public class Step2Dialog{
 		JButton b1 = new JButton("OK");
 		
 		class b1EventHandler implements ActionListener{
-			String output;
 			@Override
 			public void actionPerformed(ActionEvent ae){
-				if(radioPanel.allButton.isSelected()){
-					output = sshclient.sendCommand("cd /home/"+Model.username+"/tensorflowGUI/scripts && bash GnrtTrainingDataAll.sh "+Model.ActivatedEnv);
-					RightUpperView.finishedstep=2;
-					
-				}else if(radioPanel.recButton.isSelected()){
-					output = sshclient.sendCommand("cd /home/"+Model.username+"/tensorflowGUI/scripts && bash GnrtTrainingDataREC.sh "+Model.ActivatedEnv);
-					RightUpperView.finishedstep=2;
-					
-				}else{
-					RightUpperView.finishedstep=2;
-				}
+				RightUpperView.finishedstep=2;
+				
 				//set RightUpperView components
 				RightUpperView.descriptionLabel.setText("Complished - Step2");
 				RightUpperView.descriptionLabel.setForeground(Color.BLUE);
@@ -121,9 +113,16 @@ public class Step2Dialog{
 				//update log on RightUnderView
 				RightUnderView.updateCMDtxtField("*** Step2 'Generate Training Data' executed ***");
 				
-				new step2resultDia(output);
+				//new step2resultDia(output);
 				Dia.dispose();
 				
+				// display process view
+				runprocessDia rundia;
+				if(radioPanel.allButton.isSelected()){
+					rundia = new runprocessDia("cd /home/"+Model.username+"/tensorflowGUI/scripts && bash GnrtTrainingDataAll.sh "+Model.ActivatedEnv);
+				}else if(radioPanel.recButton.isSelected()){
+					rundia = new runprocessDia("cd /home/"+Model.username+"/tensorflowGUI/scripts && bash GnrtTrainingDataREC.sh "+Model.ActivatedEnv);
+				}
 			}}
 		b1.addActionListener(new b1EventHandler());
 		JPanel pb1 = new JPanel(new FlowLayout());

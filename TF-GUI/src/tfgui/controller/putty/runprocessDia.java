@@ -24,6 +24,8 @@ import javax.swing.SwingWorker;
 import com.jcraft.jsch.Channel;
 
 import tfgui.model.Model;
+import tfgui.view.MainView;
+import tfgui.view.left.LeftView;
 
 /**
  * Copyright 2019 The Block-AI-VIsion Authors. All Rights Reserved.
@@ -68,6 +70,8 @@ public class runprocessDia extends JDialog {
 	private JDialog thisdia;
 	private boolean ongoinflag = true;
 	private boolean processfinishedsafely = false;
+	
+	public runprocessDia() {}
 
 	public runprocessDia(String cmd) {
 		/* create new dialog */
@@ -111,7 +115,7 @@ public class runprocessDia extends JDialog {
 				InputStream commandOutput = channel.getInputStream();
 				channel.connect();
 				int readByte = commandOutput.read();
-				int cnt = 30;
+				int cnt = 10;
 				
 				// get streams
 				while (ongoinflag && readByte != 0xffffffff) {
@@ -127,11 +131,12 @@ public class runprocessDia extends JDialog {
 				ongoinflag = false;
 				String res = outputBuffer.toString();
 				//check normaly finished?
-				if(readByte != 0xffffffff) {
-					res = res + "<<<<  Finished Execution  >>>>";
+				if(readByte == 0xffffffff) {
+					res = res + "\n <<<<<<<<<<<<<<<<<<<<  Finished Execution  >>>>>>>>>>>>>>>>>>>>";
 					processfinishedsafely();
 				}
 				middletxt.setText(res);
+				LeftView.refreshview();
 				return "finish";
 			}
 		};
@@ -157,6 +162,7 @@ public class runprocessDia extends JDialog {
 		this.add(scrP, BorderLayout.CENTER);
 		this.add(btnP, BorderLayout.SOUTH);
 		this.setVisible(true);
+		//this.setAlwaysOnTop(true);
 
 		thisdia = this;
 	}
@@ -212,6 +218,8 @@ public class runprocessDia extends JDialog {
 		closeDia.add(lb, BorderLayout.CENTER);
 		closeDia.add(btnP, BorderLayout.SOUTH);
 		closeDia.setVisible(true);
+		//thisdia.setAlwaysOnTop(false);
+		//closeDia.setAlwaysOnTop(true);
 	}
 	
 	private void processfinishedsafely() {

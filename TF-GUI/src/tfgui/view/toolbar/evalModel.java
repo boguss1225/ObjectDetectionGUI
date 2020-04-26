@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -17,9 +18,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import tfgui.controller.putty.runPutty;
+import tfgui.controller.putty.runprocessDia;
 import tfgui.model.Model;
 import tfgui.view.MainView;
-/*
+import tfgui.view.right.Step3Dialog;
+/**
 * Copyright 2019 The Block-AI-VIsion Authors. All Rights Reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
@@ -46,7 +49,7 @@ import tfgui.view.MainView;
 * Date : Initial Development in 2019
 *
 * For the latest version, please check the github 
-* (https://github.com/boguss1225/TF-GUI)
+* (https://github.com/boguss1225/ObjectDetectionGUI)
 * 
 * ==========================================================================
 * Description : This program allows users to train models, configure settings,
@@ -77,9 +80,24 @@ public class evalModel {
 	 	
 	 	/*announcement */
 	 	JPanel labelp = new JPanel(new FlowLayout());
-	 	JLabel l1 = new JLabel("Evaluation metrics set : "+ Model.metrics_set);
-	 	l1.setToolTipText("If you want to change metrics set setting -> please do step 3. configure setting on right pannel");
+	 	JLabel l1 = new JLabel("Evaluation metrics set ");
+	 	String[] metrics_settypes = { "coco_detection_metrics", "coco_mask_metrics", "pascal_voc_detection_metrics",
+				"weighted_pascal_voc_detection_metrics", "pascal_voc_instance_segmentation_metrics",
+				"weighted_pascal_voc_instance_segmentation_metrics", "oid_V2_detection_metrics",
+				"open_images_V2_detection_metrics", "oid_challenge_detection_metrics",
+				"oid_challenge_object_detection_metrics", "oid_challenge_segmentation_metrics" };
+	 	JComboBox metrics_setCB = new JComboBox(metrics_settypes);
+	 	metrics_setCB.setSelectedItem(Model.metrics_set);
+	 	// select action
+	 	metrics_setCB.addActionListener(new ActionListener() {
+	 		public void actionPerformed(ActionEvent e) {
+	 			String selectedmetrics = metrics_setCB.getSelectedItem().toString();
+	 			Model.metrics_set = selectedmetrics;
+	 		}
+	 	});
+	 	l1.setToolTipText("If you want to change metrics set setting -> please finish step 3. configure setting");
 	 	labelp.add(l1);
+	 	labelp.add(metrics_setCB);
 	 	
 	 	/*set button1*/
 		JButton b1 = new JButton("Start Evaluation");
@@ -87,19 +105,7 @@ public class evalModel {
 			@Override
 			public void actionPerformed(ActionEvent ae){
 				Dia.dispose();
-				try {
-					runevalDia();
-				} catch (InterruptedException e) {
-					JOptionPane.showMessageDialog((JFrame)null,
-							e.getMessage(),
-							"Inane warning",
-							JOptionPane.WARNING_MESSAGE);
-				} catch (AWTException e) {
-					JOptionPane.showMessageDialog((JFrame)null,
-							e.getMessage(),
-							"Inane warning",
-							JOptionPane.WARNING_MESSAGE);
-				}
+				runevalDia();
 			}}
 		b1.addActionListener(new b1EventHandler());
 		JPanel pb1 = new JPanel(new FlowLayout());
@@ -126,17 +132,18 @@ public class evalModel {
 		Dia.setVisible(true);
 	}
 
-	private void runevalDia() throws InterruptedException, AWTException{
+	private void runevalDia(){
 		/*redirect to training folder*/
 		MainView.mainViewFrame.leftPane.showFolders("/home/"+Model.username+"/tensorflowGUI/"+Model.ActivatedEnv+"/models/research/object_detection/training");
 
 		//set command
 		String command = "cd /home/"+Model.username+"/tensorflowGUI/scripts "
 				+ "&& bash runeval.sh "
-				+ Model.ActivatedEnv;
+				+ Model.ActivatedEnv+" "
+				+ Model.selectedModel;
 
-		//run Putty
-		new runPutty(command);
+		//run Process
+		new runprocessDia(command);
 		
 	}
 	
