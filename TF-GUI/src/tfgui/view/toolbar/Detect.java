@@ -281,7 +281,7 @@ public class Detect{
 					   	MainView.mainViewFrame.middlePane.setImage(filepath);
 					   	
 					   	//refresh leftview
-					   	MainView.mainViewFrame.leftPane.showFolders(destinPath);
+					   	MainView.mainViewFrame.leftPane.showFolders("/home/"+Model.username+"/tensorflowGUI/"+Model.ActivatedEnv+"/models/research/object_detection/test_images/");
 					}
 					return "";
 				}

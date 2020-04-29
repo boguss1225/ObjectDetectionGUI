@@ -157,9 +157,6 @@ public class LoginView extends JFrame {
 	 	loginframe = this;
 	 	setVisible(true);
 	 	
-	 	//delete this after test
-	    //Model.sshclient = new SSHClient("10.200.196.26", "guest2", "guest002");
-	    Model.sshclient = new SSHClient("ictdls.cis.utas.edu.au", "mirap", "Yolo777@");
 
 	}
 }
