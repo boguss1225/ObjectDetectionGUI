@@ -69,6 +69,10 @@ User guid video is available here in youtube\
 # News
 PygIDE 1.0 was initially released on Github in 24th of Apr 2020.
 
+# Request
+Please email us if you need more information or free account\
+heemoon.yoon@utas.edu.au
+
 # Paper
 //(link)
 
