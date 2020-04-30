@@ -1,4 +1,4 @@
-# Easy Tensorflow GUI for anyone
+# Easy Tensorflow Object Detection API GUI for anyone
 Easy to use, Good looking, Highly utilized, and Light Tensorflow Tool.\
 PygIDE (Python graphical integrated development environment) allows anyone, even without any previous knowledge of deep learning frameworks, to design, train and deploy machine intelligence models without coding.\
 No need to Code! NO need type Command line!\
