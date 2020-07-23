@@ -74,9 +74,15 @@ Please email us if you need more information or free account\
 heemoon.yoon@utas.edu.au
 
 # Paper
+~~~
 https://arxiv.org/abs/2006.06385
+~~~
 
 # if you want to cite this
+~~~
+Yoon, H., Lee, S. H., & Park, M. (2020). TensorFlow with user friendly Graphical Framework for object detection API. arXiv, arXiv-2006.
+~~~
+~~~
 @misc{yoon2020tensorflow,
     title={TensorFlow with user friendly Graphical Framework for object detection API},
     author={Heemoon Yoon and Sang-Hee Lee and Mira Park},
@@ -85,3 +91,4 @@ https://arxiv.org/abs/2006.06385
     archivePrefix={arXiv},
     primaryClass={eess.IV}
 }
+~~~
