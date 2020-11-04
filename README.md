@@ -19,7 +19,8 @@ All you need to do is download exe file and go!\
 
 # Usage
 ## Download exe file and run in windows
-(//source link)
+currently exclusively available to internal group of association.
+If you need to setup exe, please contact me.
 
 ## Set classes
 ![picture](https://github.com/boguss1225/ObjectDetectionGUI/blob/master/screenshot/step1setclasses.PNG)
