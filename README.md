@@ -54,10 +54,6 @@ If you need to setup exe, please contact me.
 step by step manual is available here\
 https://drive.google.com/file/d/1mZkj5jhdDJcANsP8xcHKdmlPNxeHcmXM/view?usp=sharing
 
-# Guide Video
-User guid video is available here in youtube\
-//(link)
-
 # Requirements and specification for developer
 * Tensorflow environment installed in Ubuntu 16.04.6 LTS
 * Anaconda environment version 4.7.11 installed to establish Tensorflow virtual environment
@@ -69,6 +65,7 @@ User guid video is available here in youtube\
 
 # News
 PygIDE 1.0 was initially released on Github in 24th of Apr 2020.
+For Tensorflow2 --> https://github.com/boguss1225/ObjectDetectionGUI-tf2
 
 # Request
 Please email us if you need more information or free account\
